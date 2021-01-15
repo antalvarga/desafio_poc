@@ -24,61 +24,30 @@
 #define totalLinhas 9
 #define totalColunas 9
 
+#define numeroInicio 1
+#define numeroFim 9
 
-// OK => recebe o vetor linha Y e percorrer as colunas X
-void varrerColunas( int matriz[totalColunas] ) {
-    int x;
 
-    for ( x=0; x < totalColunas; x++ ) {
 
-        //matriz[x] = x * x;
-        printf( "\n Percorrer colunas :: %d", matriz[x] );
-        
-    }
-}
 
-// OK => receber o vetor coluna e percorre as linhas
-void varrerLinhas( int matriz[][totalColunas], int x ) {
+// Percorre todas as linhas (Y) da coluna recebida x
+// E avalia se o numero recebido existe nestas linhas
+void varrerLinhas( int matriz[][totalColunas], int x, int numero, int * lidos ) {
 
     int y;
 
     for ( y = 0; y < totalLinhas; y++) {
 
-        printf( "\n varrerLinhas :: %d", matriz[y][x] );
-    }
-}
+        //printf( "\n varrerLinhas :: %d", matriz[y][x] );
+        // printf( "\n Avaliando  :: Linha: %d, coluna: %d", y, x );
+        printf( "\n Avaliando  :: Linha: %d, coluna: %d :: matriz: %d, numero %d", y, x, matriz[y][x], numero );
 
-// OK =>
-void varrerQuadrante( int * lidos, int matriz[][totalColunas], int eixoX, int eixoY ) {
-
-    int x, y;
-
-    for ( y = eixoY; y < eixoY +3; y++ ) {
-
-        for ( x = eixoX; x < eixoX +3; x++) {
+        // avaliar se Numero existe na coluna de todas as linhas
+        if ( matriz[y][x] == numero ) {
             
-            printf( "\n varrerLinhas :: y: %d - x: %d :: matriz %d", y, x, matriz[y][x] );
+            lidos[ numero ]++;  
+        } 
 
-            ++lidos[ matriz[y][x] ];
-        }
-    }
-
-}
-
-// OK => 
-void varrerMatriz( int matriz[][totalColunas] ) {
-
-    int x, y;
-
-    printf( "%d \n", matriz[0][0] );
-    
-    for ( x = 0; x < totalLinhas; x++ ) {
-        
-        for ( y = 0; y < totalColunas; y++ ) {
-
-            printf( "%d \n", matriz[x][y] );
-
-        }        
     }
 }
 
@@ -87,7 +56,9 @@ void varrerMatriz( int matriz[][totalColunas] ) {
 int main() {
 
     // Despreza a posicao zero :: validos de 1 a 9
-    int lidos[totalColunas +1] = {0,0,0,0,0,0,0,0,0, 0};
+    int lidos[totalColunas +1] = {0, 0,0,0,0,0,0,0,0,0};
+
+    
 
     int matrizSudoku[totalLinhas][totalColunas] = {
           {5, 3, 4, 6, 7, 8, 9, 1, 2}
@@ -104,11 +75,40 @@ int main() {
     };
 
 
-    int x, y, z;
+    int NrPesquisar, x, y, z;
 
 
     system("clear");
     printf("main() :: Matriz Quadrada" );
+
+
+
+    // contador de 1 .. 9
+    for ( NrPesquisar = numeroInicio; NrPesquisar <= numeroFim; NrPesquisar++) {
+
+        printf( "\n " );
+        printf( "\n Avaliar numero :: %d", NrPesquisar );
+
+        // Avaliar todas as linhas (Y) recebendo x, a matriz e a coluna
+        // Teste *** avaliar apenas uma coluna numeroInicio
+        // for( x = 0; x < totalColunas; x++ ) {
+        for( x = 0; x <=0 ; x++ ) {
+
+            varrerLinhas( matrizSudoku, x, NrPesquisar, lidos );
+
+        }
+
+
+        // Avaliar todas colunas recebendo a matriz e x
+
+
+        // Avaliar todos os quadrantes passando recebendo lidos, matriz,
+        // eixoX e eixcoY
+
+        
+        
+    }
+
 
 
 
@@ -119,7 +119,7 @@ int main() {
     // varrerColunas( matrizSudoku[1] );
 
     // OK => varrer 3 linhas Y x 3 colunas x => 3 x 3
-    varrerQuadrante( lidos, matrizSudoku, 3, 3 ); // 761 / 853 / 924
+    // varrerQuadrante( lidos, matrizSudoku, 3, 3 ); // 761 / 853 / 924
 
     // OK => varrer 9 linhas Y x 9 colunas => 9 x 9 (toda matriz)
     // varrerMatriz( matrizSudoku );
@@ -127,9 +127,11 @@ int main() {
     // Valido de 1 a 9
     for (x = 1; x < totalColunas +1; x++) {
 
+        printf( "\n :: " );
         printf("\n :: Número: %d, lido %d vezes", x, lidos[x] );
 
     }
 
     return(0);
 }
+
